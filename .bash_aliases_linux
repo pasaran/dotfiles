@@ -3,6 +3,8 @@
 export LC_CTYPE=en_US.utf8
 export LANG=en_US.utf8
 
+export PKG_PATH=/usr/bin/
+
 source /etc/bash_completion.d/git-prompt
 
 if [ -f /usr/share/bash-completion/bash_completion ]; then
