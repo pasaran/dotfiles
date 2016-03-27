@@ -1,4 +1,4 @@
 #!/bin/sh
 
-$PKG_PATH/ag "$@" --nogroup --color-match=31 --color-path=34 --color-line-number=32
+$PKG_PATH/ag  "$@" --nogroup --color-match=31 --color-path=34 --color-line-number=32
 
