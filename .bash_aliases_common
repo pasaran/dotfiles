@@ -1,0 +1,33 @@
+# vim: set filetype=sh:
+
+export EMAIL="Sergei Nikitin <nop@yandex-team.ru>"
+export EDITOR=vim
+export PATH=.:~/bin:~/local/node/bin:~/usr/local/sbin:/usr/local/bin:$PATH
+
+export NODE_REPL_HISTORY_FILE=~/.node/history
+
+alias vv='vim .'
+alias l='ls -G'
+alias ll='ls -alG'
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../../'
+alias .....='cd ../../../../'
+alias ......='cd ../../../../../'
+
+# _compssh ()
+# {
+#     cur=${COMP_WORDS[COMP_CWORD]};
+#     COMPREPLY=($(compgen -W '$(/bin/cat ~/hosts_list) --all --schema' -- $cur))
+# }
+# complete -F _compssh ssh
+
+# source $(brew --prefix)/etc/bash_completion.d/git-prompt.sh
+
+export PS1='\[\e]0;\u@\h: \w\a\]\[\e[32;1m\]\u@\[\e[34;1m\]\h \w \[\e[0m\]$(__git_ps1 "(%s)")\[\e[34;1m\]\$ \[\e[0m\]'
+
+# if [ -f $(brew --prefix)/etc/bash_completion ]; then
+#     . $(brew --prefix)/etc/bash_completion
+# fi
+

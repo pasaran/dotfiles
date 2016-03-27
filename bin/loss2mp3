@@ -1,0 +1,155 @@
+#!/usr/bin/perl -w
+
+use strict;
+use File::Find;
+use File::Path;
+use Getopt::Long;
+
+my $params = {};
+GetOptions(
+    "recode" => \$params->{recode},
+    "check" => \$params->{check},
+    "verbose" => \$params->{verbose},
+    "help" => \$params->{help},
+);
+
+if ($params->{help} || !($params->{recode} || $params->{check})) {
+    usage();
+    exit;
+}
+
+sub usage {
+    print <<TEXT;
+Usage:
+    loss2mp3 options
+    loss2mp3 options dir1 [dir2, ...]
+Options:
+    --recode        convers all lossless music to mp3
+    --check         only check directories for bad cue sheets
+    --verbose       show good directories while checking
+    --help          show this message
+TEXT
+}
+
+if (@ARGV) {
+    for my $dir (@ARGV) {
+        if (-d $dir) {
+            find({ wanted => \&process, no_chdir => 1 }, $dir);
+        }
+    }
+} else {
+    find({ wanted => \&process, no_chdir => 1 }, '.');
+}
+
+sub process {
+    my $dir = $_;
+    $dir =~ s{^\./}{};
+    $dir =~ s{/$}{};
+
+    if (-d $dir) {
+        do_dir($dir);
+    }
+}
+
+sub do_dir {
+    my ($dir) = @_;
+
+    my $DIR;
+    opendir($DIR, $dir);
+    my @files = readdir($DIR);
+    closedir($DIR);
+
+    my @cue  = grep(/\.cue$/i, @files);
+    my @music = grep(/\.(flac|ape|wv)$/, @files);
+    my @wav = grep(/\.wav$/, @files);
+    if (!@music) { @music = @wav; }
+    if (!@music) { return; }
+
+    if (@cue > 1) {
+        print STDERR "fail\t$dir\n\ttoo many cue sheets\n";
+        return;
+    }
+    if (!@cue) {
+        if ($params->{verbose}) { print STDERR "ok\t$dir\n\tmusic files\n"; }
+        do_music($dir, @music);
+        return;
+    }
+
+    my $cue;
+    my $F;
+    open($F, "$dir/$cue[0]");
+    {
+        local $/;
+        $cue = <$F>;
+    }
+    close($F);
+    my @cue_files = ($cue =~ m/^FILE\s+"(.*?)"\s+WAVE\s*$/gsm);
+    if (@cue_files != 1) {
+        if ($params->{verbose}) { print STDERR "ok\t$dir\n\tmusic files with cue-playlist\n"; }
+        do_music($dir, @music);
+        return;
+    }
+
+    if (!(-e "$dir/$cue_files[0]")) {
+        print STDERR "fail\t$dir\n\tmusic file in cue sheet doesn't exist\n";
+        return;
+    }
+
+    if ($params->{verbose}) { print STDERR "ok\t$dir\n\tcue sheet\n"; }
+    do_cue($dir, $cue[0], $cue_files[0]);
+}
+
+sub do_music {
+    my ($dir, @music) = @_;
+
+    if ($params->{check}) { return; }
+
+    for my $music (@music) {
+        my $wav = $music;
+        $wav =~ s/\.(flac|ape|wv)$/.wav/;
+        if (!(-e "$dir/$wav")) {
+            if ($music =~ /\.flac$/) {
+                `flac -d -o "$dir/$wav" "$dir/$music"`;
+            } elsif ($music =~ /\.ape$/) {
+                `mac "$dir/$music" "$dir/$wav" -d`;
+            } elsif ($music =~ /\.wv$/) {
+                `wvunpack "$dir/$music" "$dir/$wav"`;
+            }
+        }
+        do_wav($music !~ /\.wav$/, $dir, $wav);
+    }
+}
+
+sub do_cue {
+    my ($dir, $cue, $music) = @_;
+
+    if ($params->{check}) { return; }
+
+    my $breaks = `cuebreakpoints -i cue "$dir/$cue`;
+    if ($breaks =~ m{^\s*$}sm) {
+        do_music($dir, $music);
+    } else {
+        `cuebreakpoints -i cue "$dir/$cue" | shntool split -O never -d "$dir" "$dir/$music"`;
+        my $DIR;
+        opendir($DIR, $dir);
+        while (my $wav = readdir($DIR)) {
+            if ($wav !~ /split-track\d+\.wav$/) { next; }
+            do_wav(1, $dir, $wav);
+        }
+        closedir($DIR);
+    }
+}
+
+sub do_wav {
+    my ($is_decoded, $dir, $wav) = @_;
+
+    mkpath("$dir/mp3");
+
+    my $mp3 = $wav;
+    $mp3 =~ s/\.wav$/.mp3/;
+    `lame --preset insane "$dir/$wav" "$dir/mp3/$mp3"`;
+    print "delete: $is_decoded\n";
+    if ($is_decoded) {
+        unlink("$dir/$wav");
+    }
+}

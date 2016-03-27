@@ -1,0 +1,66 @@
+# Class.prototype.foo
+snippet f=
+	${1:Class}.prototype.${2:method} = function( ${3} ) {
+		${4:// ...}
+	};
+# function foo()
+snippet fun
+	function ${1:name}( ${2} ) {
+		${3:// ...}
+	}
+# function()
+snippet f
+	function( ${1} ) {
+		${2:// ...}
+	}
+# if
+snippet if
+	if ( ${1:expr} ) {
+		${2:// ...}
+	}
+# if ... else
+snippet ife
+	if ( ${1:expr} ) {
+		${2}
+	} else {
+		${3}
+	}
+# ternary
+snippet t
+	( ${1:expr} ) ? ${2} : ${3}
+# switch
+snippet swi
+	switch ( ${1:expr} ) {
+		case ${3}:
+			${4:// ...}
+			break;
+		${5}
+		default:
+			${2:// ...}
+	}
+# case
+snippet case
+	case ${1}:
+		${2:// ...}
+		break;
+	${3}
+# for (...) {...}
+snippet for
+	for ( var ${1:i} = 0, ${2:l} = ${3:items}.length; $1 < $2; $1++ ) {
+		${4:$3[ $1 ]}
+	}
+# while (...) {...}
+snippet wh
+	while ( ${1:expr} ) {
+		${2:// ...}
+	}
+# console.log(...);
+snippet log
+	console.log( ${1} );
+	${2}
+# hrule
+snippet ///
+	//  ---------------------------------------------------------------------------------------------------------------  //
+	
+	${1}
+

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+export LANG="ru_RU.UTF-8"
+export LC_CTYPE="ru_RU.UTF-8"
+
+/usr/local/bin/mc
+
