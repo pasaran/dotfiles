@@ -1,6 +1,9 @@
 call plug#begin()
     Plug 'jlanzarotta/bufexplorer'
     Plug 'othree/yajs.vim'
+    " Plug 'pangloss/vim-javascript'
+    Plug 'moll/vim-node'
+    Plug 'mxw/vim-jsx'
     Plug 'MarcWeber/vim-addon-mw-utils'
     Plug 'tomtom/tlib_vim'
     Plug 'garbas/vim-snipmate'
@@ -35,6 +38,7 @@ set softtabstop=4
 set expandtab
 set smartindent
 set nowrap
+set scrolloff=4
 
 let g:tern_map_keys=1
 
