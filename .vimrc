@@ -1,6 +1,8 @@
 call plug#begin()
     Plug 'jlanzarotta/bufexplorer'
     Plug 'othree/yajs.vim'
+    Plug 'othree/es.next.syntax.vim'
+    Plug 'othree/javascript-libraries-syntax.vim'
     Plug 'gavocanov/vim-js-indent'
     " Plug 'pangloss/vim-javascript'
     Plug 'moll/vim-node'
@@ -51,6 +53,8 @@ let g:syntastic_always_populate_loc_list = 1
 " let g:syntastic_auto_loc_list = 1
 " let g:syntastic_check_on_open = 1
 " let g:syntastic_check_on_wq = 0
+
+let g:used_javascript_libs = 'jquery,underscore,react'
 
 map <F2> :e %:p:h<CR>
 map <F3> gf<CR>
