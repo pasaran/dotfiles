@@ -1,6 +1,7 @@
 call plug#begin()
     Plug 'jlanzarotta/bufexplorer'
     Plug 'othree/yajs.vim'
+    Plug 'gavocanov/vim-js-indent'
     " Plug 'pangloss/vim-javascript'
     Plug 'moll/vim-node'
     Plug 'mxw/vim-jsx'
