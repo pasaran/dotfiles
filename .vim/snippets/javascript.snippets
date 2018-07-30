@@ -1,3 +1,55 @@
+# React/Redux class
+snippet redux
+	const React = require('react');
+	const PropTypes = require('prop-types');
+	const { connect } = require('react-redux');
+
+	require('./$1.css');
+
+	class ${1:Class} extends React.Component {
+
+		render() {
+			return (
+				<div className="$1">
+				</div>
+			);
+		}
+
+	}
+
+	$1.propTypes = {
+	};
+
+	const mapStateToProps = function(state) {
+	    return {
+		};
+	};
+
+	module.exports = connect(mapStateToProps)($1);
+
+# React/Redux class
+snippet react
+	const React = require('react');
+	const PropTypes = require('prop-types');
+
+	require('./$1.css');
+
+	class ${1:Class} extends React.Component {
+
+		render() {
+			return (
+				<div className="$1">
+				</div>
+			);
+		}
+
+	}
+
+	$1.propTypes = {
+	};
+
+	module.exports = $1;
+
 # Class.prototype.foo
 snippet f=
 	${1:Class}.prototype.${2:method} = function( ${3} ) {
