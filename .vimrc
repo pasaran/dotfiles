@@ -12,9 +12,8 @@ call plug#begin()
     Plug 'garbas/vim-snipmate'
     Plug 'kien/ctrlp.vim'
     Plug 'bling/vim-airline'
-    Plug 'scrooloose/syntastic'
-    Plug 'mtscout6/syntastic-local-eslint.vim'
-    Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+    Plug 'w0rp/ale'
+    Plug 'leafgarland/typescript-vim'
 call plug#end()
 
 set nocompatible
@@ -42,17 +41,12 @@ set expandtab
 set smartindent
 set nowrap
 set scrolloff=4
+set dir=~/tmp
 
-let g:tern_map_keys=1
-
-let g:syntastic_javascript_checkers = ['eslint']
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
+let g:ale_linters = {
+\   'typescript': ['tsserver'],
+\   'javascript': ['eslint'],
+\}
 
 let g:used_javascript_libs = 'jquery,underscore,react'
 
