@@ -2,9 +2,9 @@
 
 export PKG_PATH="$(brew --prefix)/bin/"
 
-source $(brew --prefix)/etc/bash_completion.d/git-prompt.sh
-
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-    . $(brew --prefix)/etc/bash_completion
+if [ -f $(brew --prefix)/etc/bash_completion.d/git-prompt.sh ]; then
+    source $(brew --prefix)/etc/bash_completion.d/git-prompt.sh
 fi
+
+[[ -r "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]] && . "$(brew --prefix)/etc/profile.d/bash_completion.sh"
 

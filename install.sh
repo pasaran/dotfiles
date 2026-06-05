@@ -20,6 +20,7 @@ files=(
     .gitconfig
     bin
     .ssh/config
+    .profile
 )
 for name in "${files[@]}"
 do
@@ -28,12 +29,6 @@ done
 
 config_name="$HOME/.bash_aliases"
 echo "# AUTO-GENERATED FILE! SEE DO NOT EDIT!" > $config_name
-if [[ `which brew` ]]
-then
-    link_file ".profile"
-    echo "source $(pwd)/.bash_aliases_mac" >> $config_name
-else
-    echo "source $(pwd)/.bash_aliases_linux" >> $config_name
-fi
+echo "source $(pwd)/.bash_aliases_mac" >> $config_name
 echo "source $(pwd)/.bash_aliases_common" >> $config_name
 
